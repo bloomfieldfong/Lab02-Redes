@@ -5,15 +5,20 @@ import types
 
 sel = selectors.DefaultSelector()
 #messages = [b"Hola Michi.", b"que tal estas."]
-messages = [b"Hola Michi que tal estas"]
-
-
+#messages = [b"Hola Michi que tal estas"]
+#mensaje= "hola pascalito"
+#mensaje= mensaje.encode("ascii", "ignore")
+mensaje= input(str(">>"))
+x = bytes(mensaje, 'ASCII')
+print("x", x)
+messages = [x]
+print("PROBANDO", messages)
 
 def start_connections(host, port, num_conns):
     server_addr = (host, port)
     for i in range(0, num_conns):
         connid = i + 1
-        print("starting connection", connid, "to", server_addr)
+        print("Empezando conexion", connid, "a", server_addr)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.setblocking(False)
         sock.connect_ex(server_addr)
@@ -34,23 +39,23 @@ def service_connection(key, mask):
     if mask & selectors.EVENT_READ:
         recv_data = sock.recv(1024)  
         if recv_data:
-            print("received", repr(recv_data), "from connection", data.connid)
+            print("Recibido", repr(recv_data), "fue recibida por:", data.connid)
             data.recv_total += len(recv_data)
         if not recv_data or data.recv_total == data.msg_total:
-            print("closing connection", data.connid)
+            print("Cerrando conexion", data.connid)
             sel.unregister(sock)
             sock.close()
     if mask & selectors.EVENT_WRITE:
         if not data.outb and data.messages:
             data.outb = data.messages.pop(0)
         if data.outb:
-            print("sending", repr(data.outb), "to connection", data.connid)
+            print("Enviando", repr(data.outb), "a la conexion", data.connid)
             sent = sock.send(data.outb)  
             data.outb = data.outb[sent:]
 
 
 if len(sys.argv) != 4:
-    print("usage:", sys.argv[0], "<host> <port> <num_connections>")
+    print("Ruta:", sys.argv[0], "<host> <port> <num_connections>")
     sys.exit(1)
 
 host, port, num_conns = sys.argv[1:4]
