@@ -9,10 +9,30 @@ sel = selectors.DefaultSelector()
 #mensaje= "hola pascalito"
 #mensaje= mensaje.encode("ascii", "ignore")
 mensaje= input(str(">>"))
+mensaje = ascii(mensaje)
+#mensaje = mensaje.encode("ascii", "ignore")
 x = bytes(mensaje, 'ASCII')
 print("x", x)
 messages = [x]
 print("PROBANDO", messages)
+
+def viterbi_segment(text, P):
+    n = len(text)
+    words = [''] + list(text)
+    best = [1.0] + [0.0] * n
+
+    for i in range(n+1):
+        for j in range(0, i):
+            w = text[j:i]
+            if P[w] * best[i - len(w)] >= best[i]:
+                best[i] = P[w] * best[i - len(w)]
+                words[i] = w
+                sequence = []; i = len(words)-1
+                while i > 0:
+                    sequence[0:0] = [words[i]]
+                    i = i - len(words[i])
+
+        return sequence, best[-1]
 
 def start_connections(host, port, num_conns):
     server_addr = (host, port)
