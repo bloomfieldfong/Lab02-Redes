@@ -4,6 +4,7 @@ import selectors
 import types
 from fletcher_checksumvs2 import Algoritmo_Checksum, Error_de_checksum
 
+from hammingcode import * 
 sel = selectors.DefaultSelector()
 
 def bytes_to_int(bytes):
@@ -31,6 +32,8 @@ def service_connection(key, mask):
             chequeado= bytes_to_int(data.outb)
             
             error_check = Algoritmo_Checksum(recibido, chequeado)
+            
+            #chequear = hamming(recido, 2)S
             #algoritmo_check = Algoritmo_Checksum()
         else:
             recibido=  bytes_to_int(recv_data)
