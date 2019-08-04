@@ -14,9 +14,9 @@ mensaje = ascii(mensaje)
 x = bytes(mensaje, 'ASCII')
 print("x", x)
 messages = [x]
-print("PROBANDO", messages)
+print(messages)
 
-def viterbi_segment(text, P):
+def viterbi_segment(text):
     n = len(text)
     words = [''] + list(text)
     best = [1.0] + [0.0] * n
@@ -77,7 +77,6 @@ def service_connection(key, mask):
 if len(sys.argv) != 4:
     print("Ruta:", sys.argv[0], "<host> <port> <num_connections>")
     sys.exit(1)
-
 host, port, num_conns = sys.argv[1:4]
 start_connections(host, int(port), int(num_conns))
 
@@ -87,6 +86,7 @@ try:
         if events:
             for key, mask in events:
                 service_connection(key, mask)
+                
         if not sel.get_map():
             break
 except KeyboardInterrupt:

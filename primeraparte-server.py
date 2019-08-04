@@ -2,10 +2,15 @@ import sys
 import socket
 import selectors
 import types
+from fletcher_checksumvs2 import Algoritmo_Checksum, Error_de_checksum
 
 sel = selectors.DefaultSelector()
 
-
+def bytes_to_int(bytes):
+    result = 0
+    for b in bytes:
+        result = result * 256 + int(b)
+    return result
 def accept_wrapper(sock):
     conn, addr = sock.accept()  
     print("accepted connection from", addr)
@@ -22,7 +27,16 @@ def service_connection(key, mask):
         recv_data = sock.recv(1024)  
         if recv_data:
             data.outb += recv_data
+            recibido=  bytes_to_int(recv_data)
+            chequeado= bytes_to_int(data.outb)
+            
+            error_check = Algoritmo_Checksum(recibido, chequeado)
+            #algoritmo_check = Algoritmo_Checksum()
         else:
+            recibido=  bytes_to_int(recv_data)
+            chequeado= bytes_to_int(data.outb)
+            error_check = Algoritmo_Checksum(recibido, chequeado)
+            print("Por el algoritmo check_sum nos muestra que todo esta en orden",error_check)
             print("closing connection to", data.addr)
             sel.unregister(sock)
             sock.close()
