@@ -57,7 +57,7 @@ class Algoritmo_Checksum:
         return not self == other
     def bytes(self):
         return self.checksum_struct.pack(self.a)\
-+ self.checksum_struct.pack(self.b)
+             + self.checksum_struct.pack(self.b)
 
 
 
