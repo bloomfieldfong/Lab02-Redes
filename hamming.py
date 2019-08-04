@@ -16,6 +16,8 @@ def identificar(codigo, secuencia):
     codigo = buscar_paridad(codigo)
     codigo_temportal = ''
     
-    while(len(codigo) < vueltas):
+    for i in codigo:
+        print(i)
         
         
+identificar("1010101",2)
